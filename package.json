@@ -3,7 +3,23 @@
   "version": "0.1.0",
   "main": "./dist/index.js",
   "types": "dist/index.d.ts",
-  "private": true,
+  "private": false,
+  "keywords": [
+    "bounding box annotator",
+    "react",
+    "typescript",
+    "npm"
+  ],
+  "author":"ZADI Younes",
+  "description": "A bounding box annotator component",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/younesZdDz/react-bbox-annotator"
+  },
+  "bugs": {
+    "url": "https://github.com/younesZdDz/react-bbox-annotator/issues"
+  },
   "scripts": {
     "build": "rm -rf ./dist/** && tsc",
     "babel-build": "rm -rf ./dist/** && babel ./src --out-dir dist --extensions '.ts,.tsx'",
