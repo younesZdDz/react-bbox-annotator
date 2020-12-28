@@ -6,6 +6,13 @@ import { v4 as uuid } from 'uuid';
 import BBoxSelector from '../BBoxSelector';
 import LabelBox from '../LabelBox';
 
+export type EntryType = {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    label: string;
+};
 const styles = createStyles({
     bBoxAnnotator: {
         cursor: 'crosshair',
@@ -19,7 +26,7 @@ type Props = {
     url: string;
     inputMethod: 'text' | 'select';
     labels?: string | string[];
-    onChange: (entries: { left: number; top: number; width: number; height: number; label: string }[]) => void;
+    onChange: (entries: EntryType[]) => void;
     borderWidth?: number;
 };
 const BBoxAnnotator: React.FC<Props & WithStyles<typeof styles>> = ({
@@ -33,15 +40,10 @@ const BBoxAnnotator: React.FC<Props & WithStyles<typeof styles>> = ({
     const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
     const [offset, setOffset] = useState<{ x: number; y: number } | null>(null);
     const [entries, setEntries] = useState<
-        {
+        ({
             id: string;
             showCloseButton: boolean;
-            left: number;
-            top: number;
-            width: number;
-            height: number;
-            label: string;
-        }[]
+        } & EntryType)[]
     >([]);
     const [multiplier, setMultiplier] = useState(1);
     useEffect(() => {
@@ -73,6 +75,7 @@ const BBoxAnnotator: React.FC<Props & WithStyles<typeof styles>> = ({
             const width = imageElement.width;
             const height = imageElement.height;
             setMultiplier(width / maxWidth);
+            console.log(maxWidth, width, multiplier);
             setBboxAnnotatorStyle({
                 width: width / multiplier + borderWidth * 2,
                 height: height / multiplier + borderWidth * 2,
@@ -86,7 +89,7 @@ const BBoxAnnotator: React.FC<Props & WithStyles<typeof styles>> = ({
         imageElement.onerror = function () {
             throw 'Invalid image URL: ' + url;
         };
-    }, [bBoxAnnotatorRef]);
+    }, [multiplier, bBoxAnnotatorRef]);
 
     const crop = (pageX: number, pageY: number) => {
         return {
