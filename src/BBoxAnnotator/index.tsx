@@ -149,8 +149,8 @@ const BBoxAnnotator: React.FC<Props & WithStyles<typeof styles>> = ({
             case 'free':
             case 'input':
                 if (e.button !== 2) {
-                    setOffset({ x: e.pageX, y: e.pageY });
-                    setPointer({ x: e.pageX, y: e.pageY });
+                    setOffset(crop(e.pageX, e.pageY));
+                    setPointer(crop(e.pageX, e.pageY));
                     setStatus('hold');
                 }
         }
