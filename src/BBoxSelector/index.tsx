@@ -1,9 +1,7 @@
 import React from 'react';
-import { createStyles } from '@material-ui/core';
-import { WithStyles } from '@material-ui/core';
-import { withStyles } from '@material-ui/styles';
+import { createUseStyles } from 'react-jss';
 
-const styles = createStyles({
+const useStyles = createUseStyles({
     bboxSelector: {
         border: (props: Props) => `${props.borderWidth || 2}px dotted rgb(127,255,127)`,
         borderWidth: (props: Props) => `${props.borderWidth || 2}px`,
@@ -15,7 +13,8 @@ interface Props {
     rectangle: { left: number; top: number; width: number; height: number };
     borderWidth?: number;
 }
-const BBoxSelector: React.FC<Props & WithStyles<typeof styles>> = ({ rectangle, borderWidth = 2, classes }) => {
+const BBoxSelector: React.FC<Props> = ({ rectangle, borderWidth = 2 }) => {
+    const classes = useStyles({ borderWidth });
     return (
         <div
             className={classes.bboxSelector}
@@ -28,4 +27,4 @@ const BBoxSelector: React.FC<Props & WithStyles<typeof styles>> = ({ rectangle, 
         ></div>
     );
 };
-export default withStyles(styles)(BBoxSelector);
+export default BBoxSelector;

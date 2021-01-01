@@ -9,7 +9,7 @@ React bounding box annotator
 -------
 * An easy to set component with props
 * Picture scales automatically to fit the width of the parent `div `
-* Data of the bounding boxes (position in space) are still in reference to the orginal image size
+* Data of the bounding boxes (position in space) are still in reference to the original image size
 * Get the annotations (called entries) in a `callback` function
 
 ## Installation
@@ -59,14 +59,14 @@ export default App;
 ```
 ## Why should I use this?
 -------
-This component can be quiet handy if you are building a image labeling plateform. It abstracts the complexity of creating the UI for drawing boxes around an image and setting it's label while keeping the boxes  in reference to the orginal image size.
+This component can be quiet handy if you are building an image labeling plateform. It abstracts the complexity of creating the UI for drawing boxes around an image and setting it's label while keeping the boxes  in reference to the original image size.
 
 ## Available props
 -------
 The `BBoxAnnotator` Component takes the following props in order to control it's behaviour:
 
  * `url: string`: Link of the image to annotate.
- * `inputMethod: 'text' | 'select'`: `text` gives you a free text input to submit the label of annotated object, while `select` gives you a list of objects passed withe parameter `labels`.
+ * `inputMethod: 'text' | 'select'`: `text` gives you a free text input to submit the label of annotated object, while `select` gives you a list of objects passed with the parameter `labels`.
  * `onChange: (entries: { left: number; top: number; width: number; height: number; label: string }[]) => void`: Callback containing list of annotated objects. Gets triggered when adding an annotation or removing one.
- * `labels?: string | string[]`: List of labels to annotate, if any are known in advance (not required, used when inputMethod is `select`).
+ * `labels?: string | string[]`: List of labels to annotate, if any are known in advance (only used with inputMethod `select`).
  * `borderWidth?: number`: Width of bounding box border in pixels.

@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { createStyles } from '@material-ui/core';
-import { WithStyles } from '@material-ui/core';
-import { withStyles } from '@material-ui/styles';
+import { createUseStyles } from 'react-jss';
 import { v4 as uuid } from 'uuid';
 import BBoxSelector from '../BBoxSelector';
 import LabelBox from '../LabelBox';
@@ -13,7 +11,7 @@ export type EntryType = {
     height: number;
     label: string;
 };
-const styles = createStyles({
+const useStyles = createUseStyles({
     bBoxAnnotator: {
         cursor: 'crosshair',
     },
@@ -29,14 +27,8 @@ type Props = {
     onChange: (entries: EntryType[]) => void;
     borderWidth?: number;
 };
-const BBoxAnnotator: React.FC<Props & WithStyles<typeof styles>> = ({
-    url,
-    borderWidth = 2,
-    inputMethod,
-    labels,
-    onChange,
-    classes,
-}) => {
+const BBoxAnnotator: React.FC<Props> = ({ url, borderWidth = 2, inputMethod, labels, onChange }) => {
+    const classes = useStyles();
     const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
     const [offset, setOffset] = useState<{ x: number; y: number } | null>(null);
     const [entries, setEntries] = useState<
@@ -75,7 +67,6 @@ const BBoxAnnotator: React.FC<Props & WithStyles<typeof styles>> = ({
             const width = imageElement.width;
             const height = imageElement.height;
             setMultiplier(width / maxWidth);
-            console.log(maxWidth, width, multiplier);
             setBboxAnnotatorStyle({
                 width: width / multiplier + borderWidth * 2,
                 height: height / multiplier + borderWidth * 2,
@@ -276,4 +267,4 @@ const BBoxAnnotator: React.FC<Props & WithStyles<typeof styles>> = ({
         </div>
     );
 };
-export default withStyles(styles)(BBoxAnnotator);
+export default BBoxAnnotator;
