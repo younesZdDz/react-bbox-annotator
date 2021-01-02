@@ -27,15 +27,7 @@ import BBoxAnnotator from 'react-bbox-annotator';
 -------
 ```js
 import React, { useState } from 'react';
-import BBoxAnnotator from 'react-bbox-annotator';
-
-type EntryType = {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-    label: string;
-};
+import BBoxAnnotator, { EntryType } from 'react-bbox-annotator';
 
 const App: React.FC = () => {
     const labels = ['Mama cow', 'Baby cow'];
