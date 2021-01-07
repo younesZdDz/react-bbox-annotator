@@ -68,8 +68,8 @@ const BBoxAnnotator: React.FC<Props> = ({ url, borderWidth = 2, inputMethod, lab
             const height = imageElement.height;
             setMultiplier(width / maxWidth);
             setBboxAnnotatorStyle({
-                width: width / multiplier + borderWidth * 2,
-                height: height / multiplier + borderWidth * 2,
+                width: width / multiplier,
+                height: height / multiplier,
             });
             setImageFrameStyle({
                 backgroundImageSrc: imageElement.src,
@@ -80,7 +80,7 @@ const BBoxAnnotator: React.FC<Props> = ({ url, borderWidth = 2, inputMethod, lab
         imageElement.onerror = function () {
             throw 'Invalid image URL: ' + url;
         };
-    }, [multiplier, bBoxAnnotatorRef]);
+    }, [url, multiplier, bBoxAnnotatorRef]);
 
     const crop = (pageX: number, pageY: number) => {
         return {
