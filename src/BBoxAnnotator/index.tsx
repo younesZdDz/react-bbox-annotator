@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useImperativeHandle } from 'react';
 import { createUseStyles } from 'react-jss';
 import { v4 as uuid } from 'uuid';
 import BBoxSelector from '../BBoxSelector';
@@ -27,7 +27,8 @@ type Props = {
     onChange: (entries: EntryType[]) => void;
     borderWidth?: number;
 };
-const BBoxAnnotator: React.FC<Props> = ({ url, borderWidth = 2, inputMethod, labels, onChange }) => {
+
+const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inputMethod, labels, onChange }, ref) => {
     const classes = useStyles();
     const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
     const [offset, setOffset] = useState<{ x: number; y: number } | null>(null);
@@ -160,6 +161,11 @@ const BBoxAnnotator: React.FC<Props> = ({ url, borderWidth = 2, inputMethod, lab
         };
     };
 
+    useImperativeHandle(ref, () => ({
+        reset() {
+            setEntries([]);
+        },
+    }));
     const rect = rectangle();
 
     return (
@@ -266,5 +272,5 @@ const BBoxAnnotator: React.FC<Props> = ({ url, borderWidth = 2, inputMethod, lab
             </div>
         </div>
     );
-};
+});
 export default BBoxAnnotator;
