@@ -3,7 +3,7 @@ React bounding box annotator
 
 > A bounding box annotation component written for React.<br>
 
-### Demo available here: [https://bbox-annotator-demo.herokuapp.com](https://bbox-annotator-demo.herokuapp.com)
+### Demo available here: [https://bbox-annotator.netlify.app/](https://bbox-annotator.netlify.app/)
 
 ## Features
 -------
