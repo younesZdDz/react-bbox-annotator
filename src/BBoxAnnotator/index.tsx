@@ -1,6 +1,4 @@
 import React, { useRef, useEffect, useState, useImperativeHandle } from 'react';
-import { createUseStyles } from 'react-jss';
-import { v4 as uuid } from 'uuid';
 import BBoxSelector from '../BBoxSelector';
 import LabelBox from '../LabelBox';
 
@@ -11,15 +9,6 @@ export type EntryType = {
     height: number;
     label: string;
 };
-const useStyles = createUseStyles({
-    bBoxAnnotator: {
-        cursor: 'crosshair',
-    },
-    imageFrame: {
-        position: 'relative',
-        backgroundSize: '100%',
-    },
-});
 type Props = {
     url: string;
     inputMethod: 'text' | 'select';
@@ -29,7 +18,6 @@ type Props = {
 };
 
 const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inputMethod, labels, onChange }, ref) => {
-    const classes = useStyles();
     const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
     const [offset, setOffset] = useState<{ x: number; y: number } | null>(null);
     const [entries, setEntries] = useState<
@@ -65,23 +53,26 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
         const imageElement = new Image();
         imageElement.src = url;
         imageElement.onload = function () {
-            const width = imageElement.width;
-            const height = imageElement.height;
-            setMultiplier(width / maxWidth);
+            const width = imageElement.naturalWidth || imageElement.width;
+            const height = imageElement.naturalHeight || imageElement.height;
+            const scale = width / maxWidth;
+            const displayWidth = Math.round(width / scale);
+            const displayHeight = Math.round(height / scale);
+            setMultiplier(scale);
             setBboxAnnotatorStyle({
-                width: width / multiplier,
-                height: height / multiplier,
+                width: displayWidth,
+                height: displayHeight,
             });
             setImageFrameStyle({
                 backgroundImageSrc: imageElement.src,
-                width: width / multiplier,
-                height: height / multiplier,
+                width: displayWidth,
+                height: displayHeight,
             });
         };
         imageElement.onerror = function () {
-            throw 'Invalid image URL: ' + url;
+            throw new Error('Invalid image URL: ' + url);
         };
-    }, [url, multiplier, bBoxAnnotatorRef]);
+    }, [url]);
 
     const crop = (pageX: number, pageY: number) => {
         return {
@@ -130,7 +121,7 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
     }, [status, labelInputRef]);
 
     const addEntry = (label: string) => {
-        setEntries([...entries, { ...rect, label, id: uuid(), showCloseButton: false }]);
+        setEntries([...entries, { ...rect, label, id: crypto.randomUUID(), showCloseButton: false }]);
         setStatus('free');
         setPointer(null);
         setOffset(null);
@@ -170,8 +161,8 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
 
     return (
         <div
-            className={classes.bBoxAnnotator}
             style={{
+                cursor: 'crosshair',
                 width: `${bBoxAnnotatorStyle.width}px`,
                 height: `${bBoxAnnotatorStyle.height}px`,
             }}
@@ -179,8 +170,9 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
             onMouseDown={mouseDownHandler}
         >
             <div
-                className={classes.imageFrame}
                 style={{
+                    position: 'relative',
+                    backgroundSize: '100%',
                     width: `${imageFrameStyle.width}px`,
                     height: `${imageFrameStyle.height}px`,
                     backgroundImage: `url(${imageFrameStyle.backgroundImageSrc})`,
@@ -273,4 +265,5 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
         </div>
     );
 });
+BBoxAnnotator.displayName = 'BBoxAnnotator';
 export default BBoxAnnotator;

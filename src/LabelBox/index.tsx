@@ -1,14 +1,4 @@
 import React, { useState } from 'react';
-import { createUseStyles } from 'react-jss';
-
-const useStyles = createUseStyles({
-    labelBox: {
-        left: (props: Props) => `${props.left}px`,
-        top: (props: Props) => `${props.top}px`,
-        position: 'absolute',
-    },
-    labelInput: {},
-});
 
 interface Props {
     left: number;
@@ -18,7 +8,6 @@ interface Props {
     onSubmit: (label: string) => void;
 }
 const LabelBox = React.forwardRef<any, Props>(({ inputMethod, ...props }, forwardedRef) => {
-    const classes = useStyles(props);
     const [value, setValue] = useState('');
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         setValue(e.target.value);
@@ -26,12 +15,12 @@ const LabelBox = React.forwardRef<any, Props>(({ inputMethod, ...props }, forwar
             props.onSubmit(e.target.value);
         }
     };
-    const keyPressHandler = (e: React.KeyboardEvent) => {
-        if (e.which === 13) {
+    const keyDownHandler = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
             props.onSubmit(value);
+            e.preventDefault();
+            return;
         }
-
-        return e.which !== 13;
     };
     let { labels = ['object'] } = props;
     if (typeof labels === 'string') {
@@ -42,7 +31,6 @@ const LabelBox = React.forwardRef<any, Props>(({ inputMethod, ...props }, forwar
         case 'select':
             labelInput = (
                 <select
-                    className={classes.labelInput}
                     name="label"
                     ref={forwardedRef}
                     onChange={changeHandler}
@@ -60,22 +48,31 @@ const LabelBox = React.forwardRef<any, Props>(({ inputMethod, ...props }, forwar
         case 'text':
             labelInput = (
                 <input
-                    className={classes.labelInput}
                     name="label"
                     type="text"
                     value={value}
                     ref={forwardedRef}
-                    onKeyPress={keyPressHandler}
+                    onKeyDown={keyDownHandler}
                     onChange={changeHandler}
                     onMouseDown={(e) => e.stopPropagation()}
                 />
             );
             break;
         default:
-            throw `Invalid labelInput parameter: ${inputMethod}`;
+            throw new Error(`Invalid labelInput parameter: ${inputMethod}`);
     }
 
-    return <div className={classes.labelBox}>{labelInput}</div>;
+    return (
+        <div
+            style={{
+                position: 'absolute',
+                left: `${props.left}px`,
+                top: `${props.top}px`,
+            }}
+        >
+            {labelInput}
+        </div>
+    );
 });
 LabelBox.displayName = 'LabelBox';
 
