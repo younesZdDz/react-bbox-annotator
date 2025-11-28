@@ -8,4 +8,10 @@ export default defineConfig({
     clean: true,
     external: ['react', 'react-dom'],
     treeshake: true,
+    // Ensure file extensions match package.json:
+    // - ESM -> index.mjs
+    // - CJS -> index.cjs
+    outExtension: ({ format }) => ({
+        js: format === 'cjs' ? '.cjs' : '.mjs',
+    }),
 });
