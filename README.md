@@ -1,73 +1,94 @@
-React bounding box annotator
-======================
+# React Bounding Box Annotator
 
-> A bounding box annotation component written for React.<br>
+A lightweight and customizable **image bounding box annotation component** for React.
 
-### Demo available here: [https://bbox-annotator.netlify.app/](https://bbox-annotator.netlify.app/)
+👉 Demo: https://bbox-annotator.netlify.app/
 
-## Features
--------
-* An easy to set component with props
-* Picture scales automatically to fit the width of the parent `div `
-* Data of the bounding boxes (position in space) are still in reference to the original image size
-* Get the annotations (called entries) in a `callback` function
+👉 NPM: https://www.npmjs.com/package/react-bbox-annotator
 
-## Installation
--------
-Using [npm](https://www.npmjs.com/package/react-bbox-annotator):
+## ⚡ Features
 
-    $ npm install react-bbox-annotator --save
+- Simple React component with intuitive props
+- Automatically scales the image to its parent container
+- Bounding box coordinates remain in reference to the original image size
+- Emits annotation updates via a callback
+- Supports free-text labels or predefined label lists
+- Works in any modern React setup (Vite, Next.js, CRA, etc.)
 
-Then, using a module bundler that supports  ES2015 modules, such as [webpack](https://github.com/webpack/webpack):
-
-```js
-import BBoxAnnotator from 'react-bbox-annotator';
+## 📦 Installation
+```bash
+npm install react-bbox-annotator
 ```
+**React version support**
 
-### React version support
-- Version 1.0.0 requires React 18.
-- Ensure you have React 18 installed in your app:
+This package requires React 18:
 
 ```bash
 npm install react@^18.2.0 react-dom@^18.2.0
 ```
 
-## Basic example
--------
-```js
+## 📚 Usage Example
+```ts
 import React, { useState } from 'react';
-import BBoxAnnotator, { EntryType } from 'react-bbox-annotator';
+import BBoxAnnotator { type EntryType } from 'react-bbox-annotator';
 
-const App: React.FC = () => {
-    const labels = ['Mama cow', 'Baby cow'];
-    const [entries, setEntries] = useState<EntryType[]>([]);
-    return (
-        <>
-            <div style={{ width: '60%' }}>
-                <BBoxAnnotator
-                    url="https://milkgenomics.org/wp-content/uploads/2013/08/bigstock-cows-mother-and-baby-3998546.jpg"
-                    inputMethod="select"
-                    labels={labels}
-                    onChange={(e: EntryType[]) => setEntries(e)}
-                />
-            </div>
-            <pre>{JSON.stringify(entries)}</pre>
-        </>
-    );
+const App = () => {
+  const labels = ['Mama cow', 'Baby cow'];
+  const [entries, setEntries] = useState<EntryType[]>([]);
+
+  return (
+    <>
+      <div style={{ width: '60%' }}>
+        <BBoxAnnotator
+          url="https://milkgenomics.org/wp-content/uploads/2013/08/bigstock-cows-mother-and-baby-3998546.jpg"
+          inputMethod="select"
+          labels={labels}
+          onChange={(e) => setEntries(e)}
+        />
+      </div>
+
+      <pre>{JSON.stringify(entries, null, 2)}</pre>
+    </>
+  );
 };
+
 export default App;
-
 ```
-## Why should I use this?
--------
-This component can be quiet handy if you are building an image labeling plateform. It abstracts the complexity of creating the UI for drawing boxes around an image and setting it's label while keeping the boxes  in reference to the original image size.
 
-## Available props
--------
-The `BBoxAnnotator` Component takes the following props in order to control it's behaviour:
+or in CommonJS:
+```js
+const BBoxAnnotator = require('react-bbox-annotator').default;
+```
 
- * `url: string`: Link of the image to annotate.
- * `inputMethod: 'text' | 'select'`: `text` gives you a free text input to submit the label of annotated object, while `select` gives you a list of objects passed with the parameter `labels`.
- * `onChange: (entries: { left: number; top: number; width: number; height: number; label: string }[]) => void`: Callback containing list of annotated objects. Gets triggered when adding an annotation or removing one.
- * `labels?: string | string[]`: List of labels to annotate, if any are known in advance (only used with inputMethod `select`).
- * `borderWidth?: number`: Width of bounding box border in pixels.
+## ❓ Why use this component?
+
+If you're building an image labeling platform, dataset creation tool, or computer vision annotation UI, this component saves you from:
+
+- handling mouse interactions
+- scaling images
+- aligning coordinates
+- mapping UI boxes to original image dimensions
+- You get a clean, plug-and-play React component that handles all the messy UI logic.
+
+## 🔧 Available Props
+| Prop            | Type                             | Required | Default | Description                                                                   |
+| --------------- | -------------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
+| **url**         | `string`                         | ✔️ Yes   | —       | URL of the image to annotate.                                                 |
+| **inputMethod** | `'text' \| 'select'`             | ✔️ Yes   | —       | Annotation input mode. `text` = free typing, `select` = choose from `labels`. |
+| **onChange**    | `(entries: EntryType[]) => void` | ✔️ Yes   | —       | Callback fired whenever annotations are added or removed.                     |
+| **labels**      | `string[]`                       | No       | `[]`    | List of predefined labels (used only when `inputMethod="select"`).            |
+| **borderWidth** | `number`                         | No       | `2`     | Width of the bounding box border (in pixels).                                 |
+
+```ts
+export interface EntryType {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  label: string;
+}
+```
+
+## 📄 License
+
+MIT © Younes Zadi
