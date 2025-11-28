@@ -31,4 +31,5 @@ const BBoxSelector: React.FC<Props> = ({ rectangle, borderWidth = 2 }) => {
         ></div>
     );
 };
+BBoxSelector.displayName = 'BBoxSelector';
 export default BBoxSelector;

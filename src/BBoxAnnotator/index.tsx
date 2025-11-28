@@ -276,4 +276,5 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
         </div>
     );
 });
+BBoxAnnotator.displayName = 'BBoxAnnotator';
 export default BBoxAnnotator;
