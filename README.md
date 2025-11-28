@@ -14,6 +14,9 @@ A lightweight and customizable **image bounding box annotation component** for R
 - Emits annotation updates via a callback
 - Supports free-text labels or predefined label lists
 - Works in any modern React setup (Vite, Next.js, CRA, etc.)
+- Select and move existing boxes (drag to reposition)
+- Resize boxes with 8 handles (corners and edges)
+- Edit labels on existing boxes (double‑click a box)
 
 ## 📦 Installation
 ```bash
@@ -60,6 +63,14 @@ or in CommonJS:
 const BBoxAnnotator = require('react-bbox-annotator').default;
 ```
 
+## 🖱️ Interactions
+
+- Select a box: click it (selected box shows a blue border)
+- Move a box: drag a selected box
+- Resize a box: drag any of the 8 handles (corners/edges)
+- Edit a label: double‑click a box
+- Delete a box: click the close button that appears on hover
+
 ## ❓ Why use this component?
 
 If you're building an image labeling platform, dataset creation tool, or computer vision annotation UI, this component saves you from:
@@ -75,7 +86,7 @@ If you're building an image labeling platform, dataset creation tool, or compute
 | --------------- | -------------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
 | **url**         | `string`                         | ✔️ Yes   | —       | URL of the image to annotate.                                                 |
 | **inputMethod** | `'text' \| 'select'`             | ✔️ Yes   | —       | Annotation input mode. `text` = free typing, `select` = choose from `labels`. |
-| **onChange**    | `(entries: EntryType[]) => void` | ✔️ Yes   | —       | Callback fired whenever annotations are added or removed.                     |
+| **onChange**    | `(entries: EntryType[]) => void` | ✔️ Yes   | —       | Callback fired whenever annotations are added, moved, resized, edited, or removed. |
 | **labels**      | `string[]`                       | No       | `[]`    | List of predefined labels (used only when `inputMethod="select"`).            |
 | **borderWidth** | `number`                         | No       | `2`     | Width of the bounding box border (in pixels).                                 |
 

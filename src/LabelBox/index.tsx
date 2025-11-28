@@ -5,10 +5,11 @@ interface Props {
     top: number;
     inputMethod: 'text' | 'select';
     labels?: string | string[];
+    initialValue?: string;
     onSubmit: (label: string) => void;
 }
 const LabelBox = React.forwardRef<any, Props>(({ inputMethod, ...props }, forwardedRef) => {
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(props.initialValue ?? '');
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         setValue(e.target.value);
         if (inputMethod === 'select') {
@@ -34,9 +35,10 @@ const LabelBox = React.forwardRef<any, Props>(({ inputMethod, ...props }, forwar
                     name="label"
                     ref={forwardedRef}
                     onChange={changeHandler}
+                    defaultValue={props.initialValue || ''}
                     onMouseDown={(e) => e.stopPropagation()}
                 >
-                    <option>choose an item</option>
+                    <option value="">choose an item</option>
                     {labels.map((label) => (
                         <option key={label} value={label}>
                             {label}
