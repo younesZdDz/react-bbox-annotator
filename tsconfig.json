@@ -1,28 +1,27 @@
 {
     "compilerOptions": {
-        "baseUrl": "src",
-        "paths": {
-            "*": ["types/*"]
-        },
+        "target": "ES2019", // modern JS, fine for bundlers
+        "module": "ESNext", // emit ES modules
         "moduleResolution": "node",
-        "module": "esnext",
-        "jsx": "react-jsx",
-        "target": "es5",
+        "jsx": "react-jsx", // React 17+/18 JSX transform
         "lib": ["dom", "dom.iterable", "esnext"],
-        "declaration": true,
+
+        "declaration": true, // emit .d.ts
+        "declarationMap": true, // nicer type debugging
         "sourceMap": true,
         "outDir": "./dist",
         "removeComments": true,
-        "noImplicitAny": false,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
+
+        // You can turn these on gradually if your code isn't ready yet:
+        "strict": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
+
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "typeRoots": ["node_modules/@types"]
+
+        "baseUrl": "./src"
     },
-    "exclude": ["node_modules", "dist", "__tests__"],
-    "include": ["./src/**/*.tsx", "./src/**/*.ts"]
+    "include": ["src"],
+    "exclude": ["node_modules", "dist", "__tests__"]
 }
