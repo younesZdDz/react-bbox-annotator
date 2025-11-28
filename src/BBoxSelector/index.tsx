@@ -1,10 +1,14 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
+interface StyleProps {
+    borderWidth?: number;
+}
+
 const useStyles = createUseStyles({
     bboxSelector: {
-        border: (props: Props) => `${props.borderWidth || 2}px dotted rgb(127,255,127)`,
-        borderWidth: (props: Props) => `${props.borderWidth || 2}px`,
+        border: (props: StyleProps) => `${props.borderWidth || 2}px dotted rgb(127,255,127)`,
+        borderWidth: (props: StyleProps) => `${props.borderWidth || 2}px`,
         position: 'absolute',
     },
 });

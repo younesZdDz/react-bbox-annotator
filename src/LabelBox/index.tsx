@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
+interface StyleProps {
+    left: number;
+    top: number;
+}
+
 const useStyles = createUseStyles({
     labelBox: {
-        left: (props: Props) => `${props.left}px`,
-        top: (props: Props) => `${props.top}px`,
+        left: (props: StyleProps) => `${props.left}px`,
+        top: (props: StyleProps) => `${props.top}px`,
         position: 'absolute',
     },
     labelInput: {},
@@ -18,7 +23,7 @@ interface Props {
     onSubmit: (label: string) => void;
 }
 const LabelBox = React.forwardRef<any, Props>(({ inputMethod, ...props }, forwardedRef) => {
-    const classes = useStyles(props);
+    const classes = useStyles({ left: props.left, top: props.top });
     const [value, setValue] = useState('');
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         setValue(e.target.value);
@@ -26,12 +31,12 @@ const LabelBox = React.forwardRef<any, Props>(({ inputMethod, ...props }, forwar
             props.onSubmit(e.target.value);
         }
     };
-    const keyPressHandler = (e: React.KeyboardEvent) => {
-        if (e.which === 13) {
+    const keyDownHandler = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
             props.onSubmit(value);
+            e.preventDefault();
+            return;
         }
-
-        return e.which !== 13;
     };
     let { labels = ['object'] } = props;
     if (typeof labels === 'string') {
@@ -65,14 +70,14 @@ const LabelBox = React.forwardRef<any, Props>(({ inputMethod, ...props }, forwar
                     type="text"
                     value={value}
                     ref={forwardedRef}
-                    onKeyPress={keyPressHandler}
+                    onKeyDown={keyDownHandler}
                     onChange={changeHandler}
                     onMouseDown={(e) => e.stopPropagation()}
                 />
             );
             break;
         default:
-            throw `Invalid labelInput parameter: ${inputMethod}`;
+            throw new Error(`Invalid labelInput parameter: ${inputMethod}`);
     }
 
     return <div className={classes.labelBox}>{labelInput}</div>;

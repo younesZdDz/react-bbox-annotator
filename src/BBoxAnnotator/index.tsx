@@ -65,23 +65,26 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
         const imageElement = new Image();
         imageElement.src = url;
         imageElement.onload = function () {
-            const width = imageElement.width;
-            const height = imageElement.height;
-            setMultiplier(width / maxWidth);
+            const width = imageElement.naturalWidth || imageElement.width;
+            const height = imageElement.naturalHeight || imageElement.height;
+            const scale = width / maxWidth;
+            const displayWidth = Math.round(width / scale);
+            const displayHeight = Math.round(height / scale);
+            setMultiplier(scale);
             setBboxAnnotatorStyle({
-                width: width / multiplier,
-                height: height / multiplier,
+                width: displayWidth,
+                height: displayHeight,
             });
             setImageFrameStyle({
                 backgroundImageSrc: imageElement.src,
-                width: width / multiplier,
-                height: height / multiplier,
+                width: displayWidth,
+                height: displayHeight,
             });
         };
         imageElement.onerror = function () {
-            throw 'Invalid image URL: ' + url;
+            throw new Error('Invalid image URL: ' + url);
         };
-    }, [url, multiplier, bBoxAnnotatorRef]);
+    }, [url]);
 
     const crop = (pageX: number, pageY: number) => {
         return {

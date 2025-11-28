@@ -23,6 +23,15 @@ Then, using a module bundler that supports  ES2015 modules, such as [webpack](ht
 ```js
 import BBoxAnnotator from 'react-bbox-annotator';
 ```
+
+### React version support
+- Version 1.0.0 requires React 18.
+- Ensure you have React 18 installed in your app:
+
+```bash
+npm install react@^18.2.0 react-dom@^18.2.0
+```
+
 ## Basic example
 -------
 ```js
