@@ -49,10 +49,6 @@
       "pre-commit": "lint-staged"
     }
   },
-  "dependencies": {
-    "react-jss": "^10.10.0",
-    "uuid": "^9.0.1"
-  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",

@@ -1,6 +1,4 @@
 import React, { useRef, useEffect, useState, useImperativeHandle } from 'react';
-import { createUseStyles } from 'react-jss';
-import { v4 as uuid } from 'uuid';
 import BBoxSelector from '../BBoxSelector';
 import LabelBox from '../LabelBox';
 
@@ -11,15 +9,6 @@ export type EntryType = {
     height: number;
     label: string;
 };
-const useStyles = createUseStyles({
-    bBoxAnnotator: {
-        cursor: 'crosshair',
-    },
-    imageFrame: {
-        position: 'relative',
-        backgroundSize: '100%',
-    },
-});
 type Props = {
     url: string;
     inputMethod: 'text' | 'select';
@@ -29,7 +18,6 @@ type Props = {
 };
 
 const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inputMethod, labels, onChange }, ref) => {
-    const classes = useStyles();
     const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
     const [offset, setOffset] = useState<{ x: number; y: number } | null>(null);
     const [entries, setEntries] = useState<
@@ -133,7 +121,7 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
     }, [status, labelInputRef]);
 
     const addEntry = (label: string) => {
-        setEntries([...entries, { ...rect, label, id: uuid(), showCloseButton: false }]);
+        setEntries([...entries, { ...rect, label, id: crypto.randomUUID(), showCloseButton: false }]);
         setStatus('free');
         setPointer(null);
         setOffset(null);
@@ -173,8 +161,8 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
 
     return (
         <div
-            className={classes.bBoxAnnotator}
             style={{
+                cursor: 'crosshair',
                 width: `${bBoxAnnotatorStyle.width}px`,
                 height: `${bBoxAnnotatorStyle.height}px`,
             }}
@@ -182,8 +170,9 @@ const BBoxAnnotator = React.forwardRef<any, Props>(({ url, borderWidth = 2, inpu
             onMouseDown={mouseDownHandler}
         >
             <div
-                className={classes.imageFrame}
                 style={{
+                    position: 'relative',
+                    backgroundSize: '100%',
                     width: `${imageFrameStyle.width}px`,
                     height: `${imageFrameStyle.height}px`,
                     backgroundImage: `url(${imageFrameStyle.backgroundImageSrc})`,
